@@ -12,14 +12,14 @@ import java.util.Optional;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 
-    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT t FROM Todo t LEFT JOIN FETCH t.user u ORDER BY t.modifiedAt DESC")
+    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.FETCH) //@EntityGraph를 사용해서 fetch join
+//    @Query("SELECT t FROM Todo t LEFT JOIN FETCH t.user u ORDER BY t.modifiedAt DESC")
     Page<Todo> findAllByOrderByModifiedAtDesc(Pageable pageable);
 
-    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.FETCH)
-    @Query("SELECT t FROM Todo t " +
-            "LEFT JOIN FETCH t.user " +
-            "WHERE t.id = :todoId")
+    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.FETCH) //@EntityGraph를 사용해서 fetch join
+//    @Query("SELECT t FROM Todo t " +
+//            "LEFT JOIN FETCH t.user " +
+//            "WHERE t.id = :todoId")
     Optional<Todo> findByIdWithUser(@Param("todoId") Long todoId);
 
     int countById(Long todoId);
