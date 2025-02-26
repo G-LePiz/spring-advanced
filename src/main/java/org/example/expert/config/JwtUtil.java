@@ -39,9 +39,9 @@ public class JwtUtil {
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(String.valueOf(userId))
-                        .claim("email", email)
-                        .claim("userRole", userRole)
+                        .setSubject(String.valueOf(userId)) // 사용자 식별자(id)
+                        .claim("email", email) // 이메일
+                        .claim("userRole", userRole) // 유저권한
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date) // 발급일
                         .signWith(key, signatureAlgorithm) // 암호화 알고리즘

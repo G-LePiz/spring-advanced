@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.Token;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -33,25 +34,30 @@ public class AdminAop {
 
     @Around("trackLog()")
     public boolean trackAdminLog() throws IOException {
-        String url = request.getRequestURI();
-        String method = request.getMethod();
-
         boolean UserisAdmin = cheackAdmin(request);
 
         if (!UserisAdmin) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "관리자 권한이 필요합니다.");
             return false;
         }
+        String authorization = request.getHeader("Authorization");
+        String token = jwtUtil.substringToken(authorization);
+        Claims claims = jwtUtil.extractClaims(token);
+
+        String userId = claims.getSubject();
+        String url = request.getRequestURI();
+        String method = request.getMethod();
         String acessTimeDate = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 
-        log.info("관리자 접근: URL: {}, 방식: {}, 접근한 시간: {}", url, method, acessTimeDate);
+        log.info("관리자 접근: 사용자 ID: {}, URL: {}, 방식: {}, 접근한 시간: {}", userId, url, method, acessTimeDate);
+
         return true;
     }
 
     public boolean cheackAdmin(HttpServletRequest request) {
         String adminHeader = request.getHeader("Authorization");
 
-        if (adminHeader == null && adminHeader.startsWith("Bearer ")) { // adminHeader가 null이거나 adminHeader가 "Bearer "일때
+        if (adminHeader == null && adminHeader.startsWith("Bearer ")) { // adminHeader가 null이거나 adminHeader가 "Bearer "으로 시작할때
             String token = jwtUtil.substringToken(adminHeader);
             Claims claims = jwtUtil.extractClaims(token);
 

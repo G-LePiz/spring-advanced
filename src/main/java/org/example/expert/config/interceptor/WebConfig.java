@@ -14,6 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("\"/admin/comments/{commentId}\", /admin/users/{userId}");
+                .addPathPatterns("/admin/comments/{commentId}\", /admin/users/{userId}");
     }
 }
