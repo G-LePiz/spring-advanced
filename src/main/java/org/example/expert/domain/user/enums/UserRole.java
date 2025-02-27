@@ -1,5 +1,8 @@
 package org.example.expert.domain.user.enums;
 
+import org.example.expert.domain.common.exception.CommonExceptionStatus;
+import org.example.expert.domain.common.exception.CommonExceptions;
+
 import java.util.Arrays;
 
 public enum UserRole {
@@ -9,6 +12,6 @@ public enum UserRole {
         return Arrays.stream(UserRole.values())
                 .filter(r -> r.name().equalsIgnoreCase(role))
                 .findFirst()
-                .orElseThrow(() -> new InvalidRequestException("유효하지 않은 UerRole"));
+                .orElseThrow(() -> new CommonExceptions(CommonExceptionStatus.WRONG_USERROLE));
     }
 }

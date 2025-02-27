@@ -18,6 +18,7 @@ public enum CommonExceptionStatus {
     CANNOT_FOUND_DATA(HttpStatus.BAD_REQUEST, "오늘에 해당되는 날씨 데이터를 찾을 수 없습니다."),
     WEATHERDATA_DOES_NOT_EXISTS(HttpStatus.NOT_FOUND, "날씨 데이터가 없습니다."),
     ADMIN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "관리자 권한이 없습니다."),
+    WRONG_USERROLE(HttpStatus.UNAUTHORIZED, "유효하지않은 UserRole입니다"),
     TODO_NOT_FOUND(HttpStatus.NOT_FOUND, "할일을 찾지못했습니다."),
     USER_CANNOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾지 못했습니다."),
     MANAGER_NOT_FOUND(HttpStatus.NOT_FOUND, "매니저를 찾을 수 없습니다."),

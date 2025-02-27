@@ -1,6 +1,8 @@
 package org.example.expert.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.expert.domain.common.exception.CommonExceptionStatus;
+import org.example.expert.domain.common.exception.CommonExceptions;
 import org.example.expert.domain.user.dto.request.UserRoleChangeRequest;
 import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.enums.UserRole;
@@ -16,7 +18,7 @@ public class UserAdminService {
 
     @Transactional
     public void changeUserRole(long userId, UserRoleChangeRequest userRoleChangeRequest) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CommonExceptions(CommonExceptionStatus.USER_CANNOT_FOUND));
         user.updateRole(UserRole.of(userRoleChangeRequest.getRole()));
     }
 }
