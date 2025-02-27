@@ -1,7 +1,8 @@
 package org.example.expert.client;
 
 import org.example.expert.client.dto.WeatherDto;
-import org.example.expert.domain.common.exception.ServerException;
+import org.example.expert.domain.common.exception.CommonExceptionStatus;
+import org.example.expert.domain.common.exception.CommonExceptions;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,10 @@ public class WeatherClient {
 
         WeatherDto[] weatherArray = responseEntity.getBody();
         if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
-            throw new ServerException("날씨 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
+            throw new CommonExceptions(CommonExceptionStatus.WEATHERDATA_LOADING_FAILED);
         }
         if (weatherArray == null || weatherArray.length == 0) { // else를 제거함으로 불필요한 if-else를 피한다.
-            throw new ServerException("날씨 데이터가 없습니다.");
+            throw new CommonExceptions(CommonExceptionStatus.WEATHERDATA_DOES_NOT_EXISTS);
         }
 
         String today = getCurrentDate();
@@ -42,7 +43,7 @@ public class WeatherClient {
             }
         }
 
-        throw new ServerException("오늘에 해당하는 날씨 데이터를 찾을 수 없습니다.");
+        throw new CommonExceptions(CommonExceptionStatus.CANNOT_FOUND_DATA);
     }
 
     private URI buildWeatherApiUri() {

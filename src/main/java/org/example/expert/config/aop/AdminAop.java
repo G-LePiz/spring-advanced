@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.example.expert.config.JwtUtil;
+import org.example.expert.domain.common.exception.CommonExceptionStatus;
+import org.example.expert.domain.common.exception.CommonExceptions;
 import org.example.expert.domain.user.enums.UserRole;
 import org.springframework.stereotype.Component;
 
@@ -59,11 +61,11 @@ public class AdminAop {
             String token = jwtUtil.substringToken(adminHeader);
             Claims claims = jwtUtil.extractClaims(token);
 
-            UserRole userRole = UserRole.valueOf(claims.get("userRole", String.class));
+            UserRole userRole = UserRole.valueOf(claims.get("userRole", String.class)); // 대소문자때문에 오류가 발생함
             return UserRole.ADMIN == userRole;
         }
         else {
-            throw new IllegalArgumentException("관리자 권한이 없습니다.");
+            throw new CommonExceptions(CommonExceptionStatus.ADMIN_UNAUTHORIZED);
         }
     }
 }
